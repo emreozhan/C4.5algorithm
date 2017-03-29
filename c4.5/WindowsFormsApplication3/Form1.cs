@@ -15,7 +15,11 @@ namespace WindowsFormsApplication3
 {
     public partial class Form1 : Form
     {
+        double[] KullanilanOzellikler = new double[3];
+
         double BilgiPDegeri=0;
+        double [] THREADDONUSLERI = new double[6];
+        double deneme=0;
 
         public Form1()
         {
@@ -70,20 +74,44 @@ namespace WindowsFormsApplication3
 
 
             BilgiHesapla(haberorjinal,satirsayisi);
-            int BolmeSiniri=0;
 
+            THler(haberorjinal, satirsayisi);
            
-        
-        Thread Thread1111 = new Thread(() => THFonksiyon1(haberorjinal,0,satirsayisi,BolmeSiniri));
-        Thread1111.Start();
-        }///button click sonu
+        }//button click sonu
 
 
-        private void THFonksiyon1(int [,] matris,int Fx,int satirsayisi, int sinir)
+        public void THler(int[,] matris, int satirsayisi)
+        {
+            int BolmeSiniri = 50;
+
+            Thread T_1A = new Thread(() => THFonksiyon1(matris, 0, satirsayisi, 50,0));
+            Thread T_1B = new Thread(() => THFonksiyon1(matris, 0, satirsayisi, 60,1));
+            Thread T_1C = new Thread(() => THFonksiyon1(matris, 0, satirsayisi, 70,2));
+
+
+
+            T_1A.Start();
+            T_1B.Start();
+            T_1C.Start();
+
+            while (deneme < 3)
+            { /**threadler bittiğinde bu döngüdem kurtulur*/ }
+
+
+            //threadlerin hesapladığı kazançların en büyük olanını seç
+            MessageBox.Show("bittiler");
+
+
+
+        }
+
+
+        private void THFonksiyon1(int [,] matris,int Fx,int satirsayisi, int sinir,int thid)
         {
 
-            double KSayi=0,SKubir=0,SKuiki=0;
+            MessageBox.Show(""+thid+"basladi");
 
+            double KSayi=0,SKubir=0,SKuiki=0;
             double BSayi = 0, sBubir = 0, sBuiki=0;
 
             int sayac = 0;
@@ -104,23 +132,104 @@ namespace WindowsFormsApplication3
                             sBuiki++;
                         }
 
-               
+                sayac++;
+            }
+            double BilgiX1= (KSayi/satirsayisi) * (((-(SKubir/KSayi))*Math.Log((SKubir/KSayi),2))-(((SKuiki/KSayi)*Math.Log((SKuiki/KSayi),2))))
+                +
+                (BSayi / satirsayisi) * (((-(sBubir / BSayi)) * Math.Log((sBubir / BSayi), 2)) - (((sBuiki / BSayi) * Math.Log((sBuiki / BSayi), 2))));
+
+            THREADDONUSLERI[thid] = BilgiX1;
+           // MessageBox.Show("BilgiX1: "+ BilgiX1);
+
+            deneme++;
+
+            MessageBox.Show("" + thid + "bitti");
+
+        }
+   
+        private void THFonksiyon2(int[,] matris, int Fx, int satirsayisi, int sinir)
+        {
+
+            double KSayi = 0, SKubir = 0, SKuiki = 0;
+            double BSayi = 0, sBubir = 0, sBuiki = 0;
+
+            int sayac = 0;
+            while (sayac < satirsayisi)
+            {
+                if (matris[sayac, Fx] < sinir)
+                {
+                    KSayi++;
+                    if (matris[sayac, 3] == 1)
+                        SKubir++;
+                    else
+                        SKuiki++;
+                }
+                else if (matris[sayac, Fx] > sinir)
+                {
+                    BSayi++;
+                    if (matris[sayac, 3] == 1)
+                        sBubir++;
+                    else
+                        sBuiki++;
+                }
+
                 sayac++;
             }
 
 
-            double BilgiX1= (KSayi/satirsayisi) * (-(SKubir/KSayi)*Math.Log(SKubir/KSayi,2))-((SKuiki/KSayi)*Math.Log((SKuiki/KSayi),2))
+            double BilgiX2 = (KSayi / satirsayisi) * (((-(SKubir / KSayi)) * Math.Log((SKubir / KSayi), 2)) - (((SKuiki / KSayi) * Math.Log((SKuiki / KSayi), 2))))
                 +
-                (BSayi / satirsayisi) * (-(sBubir / BSayi) * Math.Log(sBubir / BSayi, 2)) - ((sBuiki / BSayi) * Math.Log((sBuiki / BSayi), 2)) 
-                ;
+                (BSayi / satirsayisi) * (((-(sBubir / BSayi)) * Math.Log((sBubir / BSayi), 2)) - (((sBuiki / BSayi) * Math.Log((sBuiki / BSayi), 2))));
 
+            THREADDONUSLERI[1] = BilgiX2;
+          //  MessageBox.Show("BilgiX2: " + BilgiX2);
 
-            MessageBox.Show("BilgiX1: "+ BilgiX1);
-
+            deneme++;
 
         }
 
-       /** private void YEDEK(string param1, int param2)
+        private void THFonksiyon3(int[,] matris, int Fx, int satirsayisi, int sinir)
+        {
+
+            double KSayi = 0, SKubir = 0, SKuiki = 0;
+            double BSayi = 0, sBubir = 0, sBuiki = 0;
+
+            int sayac = 0;
+            while (sayac < satirsayisi)
+            {
+                if (matris[sayac, Fx] < sinir)
+                {
+                    KSayi++;
+                    if (matris[sayac, 3] == 1)
+                        SKubir++;
+                    else
+                        SKuiki++;
+                }
+                else if (matris[sayac, Fx] > sinir)
+                {
+                    BSayi++;
+                    if (matris[sayac, 3] == 1)
+                        sBubir++;
+                    else
+                        sBuiki++;
+                }
+
+                sayac++;
+            }
+
+
+            double BilgiX1 = (KSayi / satirsayisi) * (((-(SKubir / KSayi)) * Math.Log((SKubir / KSayi), 2)) - (((SKuiki / KSayi) * Math.Log((SKuiki / KSayi), 2))))
+                +
+                (BSayi / satirsayisi) * (((-(sBubir / BSayi)) * Math.Log((sBubir / BSayi), 2)) - (((sBuiki / BSayi) * Math.Log((sBuiki / BSayi), 2))));
+
+            THREADDONUSLERI[2] = BilgiX1;
+            // MessageBox.Show("BilgiX1: "+ BilgiX1);
+
+            deneme++;
+        }
+
+
+        /** private void YEDEK(string param1, int param2)
         {
             int ii = 0;
 
