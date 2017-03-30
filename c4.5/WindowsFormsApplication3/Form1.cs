@@ -19,8 +19,8 @@ namespace WindowsFormsApplication3
         double BilgiPDegeri=0;
         double [] THREADDONUSLERI = new double[9];
         int[] THBolSinir = { 50, 60, 70, 62, 63, 64, 5, 10, 19 };
-        double deneme=0;
-
+        int deneme=0;
+        int THBOSDONGU = 9;
         public Form1()
         {
             InitializeComponent();
@@ -48,7 +48,7 @@ namespace WindowsFormsApplication3
             BilgiPDegeri = -(birSayi / satirsayisi)*(Math.Log((birSayi /satirsayisi), 2));
             BilgiPDegeri = BilgiPDegeri -(ikiSayi / satirsayisi) * (Math.Log((ikiSayi) / (satirsayisi), 2));
 
-            MessageBox.Show("Bilgi Degeri: "+BilgiPDegeri);
+           // MessageBox.Show("Bilgi Degeri: "+BilgiPDegeri);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -117,7 +117,7 @@ namespace WindowsFormsApplication3
             
            
 
-            while (deneme < 9)
+            while (deneme < THBOSDONGU)
             { /**threadler bittiğinde bu döngüdem kurtulur, bundan sonra bütün kazançlar hesaplanmış olur*/ }
            
             
@@ -139,8 +139,8 @@ namespace WindowsFormsApplication3
                 { SinBuyukAdet++; }
             }
 
-            double[,] SolAltDizi=new double[SinKucukAdet,4];
-            double[,] SagAltDizi = new double[SinBuyukAdet,4];
+            int[,] SolAltDizi=new int[SinKucukAdet,4];
+            int[,] SagAltDizi = new int[SinBuyukAdet,4];
             int sol=0,sag=0;
             for(int i=0;i<satirsayisi;i++)
             {
@@ -161,17 +161,51 @@ namespace WindowsFormsApplication3
                     sag++;
                 }
             }
-
+           
+           
             /**homojenlik kontrol ekle*/
+            int tmp = 0;
+            for(int aa=0; aa<(SolAltDizi.GetUpperBound(0)+1) ; aa++ )
+                {
+                    if(SolAltDizi[aa,3]==1)
+                    { tmp++; }
+                        else
+                         {tmp--;}
 
+                }
 
+            if ((Math.Abs(tmp)) == (SolAltDizi.GetUpperBound(0) + 1))
+            {
+                MessageBox.Show("Sol Homojen");
+            }
+            else
+                { 
+                MessageBox.Show("Sol Homojen değil");
+               // deneme = 0;
+                //THBOSDONGU -=3;
+                //THler(SolAltDizi, (SolAltDizi.GetUpperBound(0) + 1));
+            
+                }
 
+            //sag dizi
+            int tmp2 = 0;
+            for (int aa = 0; aa < (SagAltDizi.GetUpperBound(0) + 1); aa++)
+            {
+                if (SagAltDizi[aa, 3] == 1)
+                { tmp2++; }
+                else
+                { tmp2--; }
 
+            }
+            if ((Math.Abs(tmp2)) == (SagAltDizi.GetUpperBound(0) + 1))
+            {
+                MessageBox.Show("Sag Homojen");
+            }
+            else
+            { MessageBox.Show("Sag Homojen değil");
+           
 
-
-
-
-
+            }
 
 
 
@@ -183,9 +217,9 @@ namespace WindowsFormsApplication3
             int Eniyiindis = 0;
             int sayac = 0;
             double temp = 999999;
-            for (sayac = 0; sayac < THREADDONUSLERI.GetUpperBound(0); sayac++)
+            for (sayac = 0; sayac < THREADDONUSLERI.GetUpperBound(0)+1; sayac++)
             {
-                if (THREADDONUSLERI[sayac] < temp && THREADDONUSLERI[sayac] != 0)
+                if (THREADDONUSLERI[sayac] < temp && THREADDONUSLERI[sayac] != 0 && KullanilanOzellikler[sayac/3]==0 )
                 {
                     temp = THREADDONUSLERI[sayac];
                     Eniyiindis = sayac;
