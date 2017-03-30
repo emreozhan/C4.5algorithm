@@ -16,9 +16,9 @@ namespace WindowsFormsApplication3
     public partial class Form1 : Form
     {
         double[] KullanilanOzellikler = new double[3];
-
         double BilgiPDegeri=0;
         double [] THREADDONUSLERI = new double[9];
+        int[] THBolSinir = { 50, 60, 70, 62, 63, 64, 5, 10, 19 };
         double deneme=0;
 
         public Form1()
@@ -82,42 +82,117 @@ namespace WindowsFormsApplication3
 
         public void THler(int[,] matris, int satirsayisi)
         {
+            if (KullanilanOzellikler[0] == 0)
+            {
+                Thread T_0A = new Thread(() => THFonksiyon1(matris, 0, satirsayisi, THBolSinir[0], 0));
+                Thread T_0B = new Thread(() => THFonksiyon1(matris, 0, satirsayisi, THBolSinir[1], 1));
+                Thread T_0C = new Thread(() => THFonksiyon1(matris, 0, satirsayisi, THBolSinir[2], 2));
+                T_0A.Start();
+                T_0B.Start();
+                T_0C.Start();
+            }
 
-            Thread T_0A = new Thread(() => THFonksiyon1(matris, 0, satirsayisi, 50,0));
-            Thread T_0B = new Thread(() => THFonksiyon1(matris, 0, satirsayisi, 60,1));
-            Thread T_0C = new Thread(() => THFonksiyon1(matris, 0, satirsayisi, 70,2));
-
+            if (KullanilanOzellikler[1] == 0)
+            {
+                Thread T_1A = new Thread(() => THFonksiyon1(matris, 1, satirsayisi, THBolSinir[3], 3));
+                Thread T_1B = new Thread(() => THFonksiyon1(matris, 1, satirsayisi, THBolSinir[4], 4));
+                Thread T_1C = new Thread(() => THFonksiyon1(matris, 1, satirsayisi, THBolSinir[5], 5));
+                T_1A.Start();
+                T_1B.Start();
+                T_1C.Start();
+            }
+            if (KullanilanOzellikler[2] == 0)
+            {
+                Thread T_2A = new Thread(() => THFonksiyon1(matris, 2, satirsayisi, THBolSinir[6], 6));
+                Thread T_2B = new Thread(() => THFonksiyon1(matris, 2, satirsayisi, THBolSinir[7], 7));
+                Thread T_2C = new Thread(() => THFonksiyon1(matris, 2, satirsayisi, THBolSinir[8], 8));
+                T_2A.Start();
+                T_2B.Start();
+                T_2C.Start();
+            }
             
-            Thread T_1A = new Thread(() => THFonksiyon1(matris, 1, satirsayisi, 62,3));
-            Thread T_1B = new Thread(() => THFonksiyon1(matris, 1, satirsayisi, 63,4));
-            Thread T_1C = new Thread(() => THFonksiyon1(matris, 1, satirsayisi, 64,5));
-
-            Thread T_2A = new Thread(() => THFonksiyon1(matris, 2, satirsayisi, 5, 6));
-            Thread T_2B = new Thread(() => THFonksiyon1(matris, 2, satirsayisi, 10, 7));
-            Thread T_2C = new Thread(() => THFonksiyon1(matris, 2, satirsayisi, 19, 8));
-
-
-            T_0A.Start();
-            T_0B.Start();
-            T_0C.Start();
+           
             
-            T_1A.Start();
-            T_1B.Start();
-            T_1C.Start();
+          
             
-            T_2A.Start();
-            T_2B.Start();
-            T_2C.Start();
+           
 
             while (deneme < 9)
-            { /**threadler bittiğinde bu döngüdem kurtulur*/ }
-
-
+            { /**threadler bittiğinde bu döngüdem kurtulur, bundan sonra bütün kazançlar hesaplanmış olur*/ }
+           
+            
             //threadlerin hesapladığı kazançların en büyük olanını seç
+             int EniyiKazancIndis=EniyiKazancBul();
+            int EniyiOzellikNo=EniyiKazancIndis/3;
+             KullanilanOzellikler[EniyiOzellikNo] = 1;//agaca eklenen ozelligi 1 yapar
+
+            /**Dizileri böl */
+             int SinKucukAdet = 0, SinBuyukAdet = 0;
+            
+            for(int i=0;i<satirsayisi;i++)
+            {
+                if (matris[i, EniyiOzellikNo] < THBolSinir[EniyiKazancIndis])
+                {
+                    SinKucukAdet++;
+                }
+                else
+                { SinBuyukAdet++; }
+            }
+
+            double[,] SolAltDizi=new double[SinKucukAdet,4];
+            double[,] SagAltDizi = new double[SinBuyukAdet,4];
+            int sol=0,sag=0;
+            for(int i=0;i<satirsayisi;i++)
+            {
+                if (matris[i, EniyiOzellikNo] < THBolSinir[EniyiKazancIndis])
+                {
+                    SolAltDizi[sol, 0] = matris[i, 0];
+                    SolAltDizi[sol, 1] = matris[i, 1];
+                    SolAltDizi[sol, 2] = matris[i, 2];
+                    SolAltDizi[sol, 3] = matris[i, 3];
+                    sol++;
+                }
+                else
+                {
+                    SagAltDizi[sag, 0] = matris[i, 0];
+                    SagAltDizi[sag, 1] = matris[i, 1];
+                    SagAltDizi[sag, 2] = matris[i, 2];
+                    SagAltDizi[sag, 3] = matris[i, 3];
+                    sag++;
+                }
+            }
+
+            /**homojenlik kontrol ekle*/
+
+
+
+
+
+
+
+
+
+
+
+
             MessageBox.Show("bittiler");
+        }
 
-
-
+        private int EniyiKazancBul()
+        {
+            int Eniyiindis = 0;
+            int sayac = 0;
+            double temp = 999999;
+            for (sayac = 0; sayac < THREADDONUSLERI.GetUpperBound(0); sayac++)
+            {
+                if (THREADDONUSLERI[sayac] < temp && THREADDONUSLERI[sayac] != 0)
+                {
+                    temp = THREADDONUSLERI[sayac];
+                    Eniyiindis = sayac;
+                }
+            }
+               
+            return Eniyiindis;  
         }
 
 
@@ -160,7 +235,10 @@ namespace WindowsFormsApplication3
             //MessageBox.Show("" + thid + "bitti");
 
         }
-   
+
+
+
+
         /** private void YEDEK(string param1, int param2)
         {
             int ii = 0;
