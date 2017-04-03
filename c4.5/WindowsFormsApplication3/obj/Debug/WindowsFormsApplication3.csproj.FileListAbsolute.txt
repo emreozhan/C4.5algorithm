@@ -8,10 +8,10 @@ C:\Users\fatma\Desktop\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsAppli
 C:\Users\fatma\Desktop\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.exe
 C:\Users\fatma\Desktop\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.pdb
 C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.exe.config
-C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.exe
-C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.pdb
+C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.exe
+C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.pdb
 C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.csprojResolveAssemblyReference.cache
 C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.Properties.Resources.resources
 C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.csproj.GenerateResource.Cache
-C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.exe
-C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.pdb
+C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.exe
+C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.pdb
