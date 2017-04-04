@@ -25,7 +25,7 @@ namespace WindowsFormsApplication3
         int YUZDEHATA = 3;
 
         int GloSayac = 0;
-        int[] Dugumler = new int[100];
+        int[,] Dugumler = new int[100,3];
 
         public Form1()
         {
@@ -192,11 +192,14 @@ namespace WindowsFormsApplication3
                    if(list2index<10000){
                        listBox2.Items.Add(EniyiOzellikNo).ToString();
                        listBox2.Items.Add(bolmesiniri).ToString();
+                       listBox2.Items.Add("sol");
+
                        list2index++;
-                       Dugumler[GloSayac] = EniyiOzellikNo;
+                       Dugumler[GloSayac,0] = EniyiOzellikNo;
+                       Dugumler[GloSayac,1] = bolmesiniri;
+                       Dugumler[GloSayac,2] = -100;
                        GloSayac++;
-                       Dugumler[GloSayac] = bolmesiniri;
-                       GloSayac++;
+                       
                    }
                     //Recursive
                     THler(SolAltDizi, (SolAltDizi.GetUpperBound(0) + 1));
@@ -216,10 +219,12 @@ namespace WindowsFormsApplication3
                     {
                         listBox2.Items.Add(EniyiOzellikNo).ToString();
                         listBox2.Items.Add(bolmesiniri).ToString();
+                        listBox2.Items.Add("sag");
+
                         list2index++;
-                        Dugumler[GloSayac] = EniyiOzellikNo;
-                        GloSayac++;
-                        Dugumler[GloSayac] = bolmesiniri;
+                        Dugumler[GloSayac,0] = EniyiOzellikNo;
+                        Dugumler[GloSayac,1] = bolmesiniri;
+                        Dugumler[GloSayac,2] = 100;
                         GloSayac++;
                     }
                     listBox1.Items.Add("_sag" + (SagAltDizi.GetUpperBound(0) + 1) + "");
@@ -227,30 +232,6 @@ namespace WindowsFormsApplication3
                 }
             }
             
-
-
-            
-
-            
-
-            //sol alta geçmek için
-            //kabul koşulunu sağlamalı-sol dizisi boş olmamalı-
-            //bütün özellikler kullanılmış olmamalı-
-            //butun ozellikler bittiyse REC çalıştırma
-
-
-
-
-
-
-          // THler(SolAltDizi, (SolAltDizi.GetUpperBound(0) + 1));
-                                  
-               
-
-         
-           
-
-
 
            // MessageBox.Show("bittiler");
         }
@@ -357,6 +338,7 @@ namespace WindowsFormsApplication3
 
 
         //Ağaç Çizme Button
+        int say = 0;
         private void agacCiz_Click(object sender, EventArgs e)
         {
             int a=0;
@@ -365,40 +347,19 @@ namespace WindowsFormsApplication3
             Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             Graphics g = Graphics.FromImage(bmp);
 
-            //g.DrawRectangle(new Pen(Color.Black, 3), pictureBox1.Width-40, 0, pictureBox1.Width + 40, 40);
-           // g.DrawRectangle(new Pen(Color.Black, 1), pictureBox1.Width/2,40,40,40);
-            //                                   ,  X  ,yuksek,genişlik , yuksek ,);  
-            g.DrawEllipse(new Pen(Color.Black, 1), BasX/2, BasY, 70, 40);
-            using (Font myFont = new Font("Arial", 10)) { g.DrawString("f "+Dugumler[0].ToString(), myFont, Brushes.Green, new Point(BasX/2+20, BasY+15)); }
-            using (Font myFont = new Font("Arial", 10)) { g.DrawString("__"+Dugumler[1].ToString(), myFont, Brushes.Green, new Point(BasX / 2 + 40, BasY + 15)); }
+           
 
-
-
-            int durum = 0;
-            int tekrar = 0;
+            int mevcutX = BasX / 2;
+            int mevcutY = BasY +15;
             
-            int mevcutX=BasX /2-90;
-            int mevcutY = BasY + 80;
-            ///cizdirme işlemi 4.04.2017_03.58
-            for(int ii=2; ii<GloSayac;ii++)
-            {
-                 if(Dugumler[ii] != Dugumler[ii+2])
-                 {//sol çizgi
-                     g.DrawLine(new Pen(Color.Red, 2), BasX/2+35, BasY+40, BasX/2-60, BasY+80);
+            g.DrawEllipse(new Pen(Color.Black, 1), mevcutX, BasY, 70, 40);
+            using (Font myFont = new Font("Arial", 10)) { g.DrawString("-f "+Dugumler[0,0].ToString(), myFont, Brushes.Green, new Point(mevcutX+10, mevcutY)); }
+            using (Font myFont = new Font("Arial", 10)) { g.DrawString("-_"+Dugumler[0,1].ToString(), myFont, Brushes.Green, new Point(mevcutX+ 40, mevcutY)); }
 
-                     g.DrawEllipse(new Pen(Color.Black, 1), mevcutX , mevcutY, 70, 40);
-                     using (Font myFont = new Font("Arial", 10)) { g.DrawString("f "+Dugumler[ii], myFont, Brushes.Green, new Point(mevcutX,mevcutY+15)); }
-                     using (Font myFont = new Font("Arial", 10)) { g.DrawString("__" + Dugumler[ii+1].ToString(), myFont, Brushes.Green, new Point(mevcutX+30, mevcutY+15)); }
-
-
-                 }
-
-
-            }
-
-
-
-            
+            SolCiz(g, mevcutX + 10, mevcutY, 1);
+            sagagec = 1;
+            SagCiz(g, mevcutX + 40, mevcutY,7);
+        
             
             
             
@@ -406,10 +367,59 @@ namespace WindowsFormsApplication3
             pictureBox1.Image = bmp;
         }
 
+        int sayac = 0;
+        int sagagec = 0;
 
+        public void SolCiz(Graphics g,int X,int Y,int dd)
+        {
+            listBox1.Items.Add("Solciizliyor " + dd);
+           g.DrawLine(new Pen(Color.Red, 2), X, Y+20, X-40, Y+60);
+           g.DrawEllipse(new Pen(Color.Black, 1), X-75 ,Y+60, 70, 40);
+           string tmp = Dugumler[dd, 0].ToString();
+           using (Font myFont = new Font("Arial", 10)) { g.DrawString("f " + Dugumler[dd, 0]+"", myFont, Brushes.Green, new Point(X-60, Y+70)); }
+          using (Font myFont = new Font("Arial", 10)) { g.DrawString("_" + (Dugumler[dd, 1]).ToString(), myFont, Brushes.Green, new Point(X-40,Y+ 70)); }
+          if (dd < GloSayac )
+          {
+              if (Dugumler[dd, 2] == -100 && Dugumler[dd, 0] != Dugumler[dd - 1, 0] && sayac < 3)
+              {//sol çizgi
+                  sayac++;
+                 SolCiz(g, X - 60, Y + 80, dd + 1);
+                  sayac--;
+              }
+              else
+              {
+                  SagCiz(g, X + 60, Y - 80, dd + 1);
+              }
+          }
+          return ;
+        }
+    
+        public void SagCiz(Graphics g,int X, int Y,int dd)
+        {
 
+            g.DrawLine(new Pen(Color.Red, 2), X, Y + 20, X + 40, Y + 60);
+            g.DrawEllipse(new Pen(Color.Black, 1), X + 35, Y + 60, 70, 40);
+            string tmp = Dugumler[dd, 0].ToString();
+            using (Font myFont = new Font("Arial", 10)) { g.DrawString("f " + Dugumler[dd, 0], myFont, Brushes.Red, new Point(X + 40, Y + 70)); }
+            using (Font myFont = new Font("Arial", 10)) { g.DrawString("_" + (Dugumler[dd, 1]).ToString(), myFont, Brushes.Red, new Point(X + 60, Y + 70)); }
+            if (dd < GloSayac)
+            {
+                if (Dugumler[dd, 2] == 100 && Dugumler[dd, 0] != Dugumler[dd - 1, 0])
+                {
+                    
+                    SagCiz(g, X + 60, Y -( sayac*80), dd + 1);
 
-     
+                }
+                else
+                {
+                  if(sagagec==1) 
+                   SolCiz(g, X+60 , Y + 80, dd + 1);
+                }
+            }
+            
+            return;
+
+        }
 
 
     }

@@ -77,7 +77,7 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(21, 75);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(600, 360);
+            this.pictureBox1.Size = new System.Drawing.Size(633, 521);
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
@@ -85,7 +85,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(901, 490);
+            this.ClientSize = new System.Drawing.Size(1140, 608);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.agacCiz);
             this.Controls.Add(this.listBox2);

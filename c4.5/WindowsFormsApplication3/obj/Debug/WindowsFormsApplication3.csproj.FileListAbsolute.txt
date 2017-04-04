@@ -15,3 +15,4 @@ C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\D
 C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.csproj.GenerateResource.Cache
 C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.exe
 C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.pdb
+C:\Users\Emre\Documents\GitHub\C4.5algorithm\c4.5\WindowsFormsApplication3\obj\Debug\WindowsFormsApplication3.csprojResolveAssemblyReference.cache
