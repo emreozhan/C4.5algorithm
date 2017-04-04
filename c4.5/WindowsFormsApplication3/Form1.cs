@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 
 namespace WindowsFormsApplication3
@@ -17,13 +19,13 @@ namespace WindowsFormsApplication3
     {
         double[] KullanilanOzellikler = new double[3];
         double BilgiPDegeri=0;
-// double [] THREADDONUSLERI = new double[9];
         //                    0  1   2  /3   4   5  / 6  7   8
         int[] THBolSinir = { 50, 60, 70, 62, 63, 64, 5, 10, 19 };
         int deneme=0;
-//  int THBOSDONGU = 9;
         int YUZDEHATA = 3;
 
+        int GloSayac = 0;
+        int[] Dugumler = new int[100];
 
         public Form1()
         {
@@ -83,7 +85,7 @@ namespace WindowsFormsApplication3
             MessageBox.Show("Button Click Bitti ");
         }//button click sonu
 
-
+        int list2index = 0;
         public void THler(int[,] matris, int satirsayisi)
         {
 
@@ -134,10 +136,12 @@ namespace WindowsFormsApplication3
                  /**threadler bittiğinde bu döngüdem kurtulur, bundan sonra bütün kazançlar hesaplanmış olur*/ 
             }
             
+
             //threadlerin hesapladığı kazançların en büyük olanını seç
              int EniyiKazancIndis = EniyiHesapla(THreturn);
              int EniyiOzellikNo=EniyiKazancIndis/3;
-          // KullanilanOzellikler[EniyiOzellikNo] = 1;//agaca eklenen ozelligi 1 yapar
+            
+            int bolmesiniri = THBolSinir[EniyiKazancIndis];
 
             /**Dizileri böl */
            int SinKucukAdet = 0, SinBuyukAdet = 0;
@@ -184,12 +188,23 @@ namespace WindowsFormsApplication3
             {
                 if(KullanilanOzellikler[0]==0 ||KullanilanOzellikler[1]==0 || KullanilanOzellikler[2]==0 )
                 {
-                    KullanilanOzellikler[EniyiOzellikNo] = 1;//agaca eklenen ozelligi 1 yapar
+                    KullanilanOzellikler[EniyiOzellikNo] = 1;//agaca eklenen ozelligi 1 
+                   if(list2index<10000){
+                       listBox2.Items.Add(EniyiOzellikNo).ToString();
+                       listBox2.Items.Add(bolmesiniri).ToString();
+                       list2index++;
+                       Dugumler[GloSayac] = EniyiOzellikNo;
+                       GloSayac++;
+                       Dugumler[GloSayac] = bolmesiniri;
+                       GloSayac++;
+                   }
+                    //Recursive
                     THler(SolAltDizi, (SolAltDizi.GetUpperBound(0) + 1));
-                    listBox1.Items.Add("(" + SolAltEntropi + ")sol_" + (SolAltDizi.GetUpperBound(0) + 1) + "");
+                    listBox1.Items.Add("sol_" + (SolAltDizi.GetUpperBound(0) + 1) + "");
                     KullanilanOzellikler[EniyiOzellikNo] = 0;
                 }
             }
+
 
             if (SagAltEntropi == -1 && SagAltDizi.GetUpperBound(0) + 1 > 1)//homojen degilse
             {
@@ -197,10 +212,21 @@ namespace WindowsFormsApplication3
                 {
                     KullanilanOzellikler[EniyiOzellikNo] = 1;//agaca eklenen ozelligi 1 yapar
                     THler(SagAltDizi, (SagAltDizi.GetUpperBound(0) + 1));
-                    listBox1.Items.Add("("+SagAltEntropi+")--sag *****" + (SagAltDizi.GetUpperBound(0) + 1) + "");
+                    if (list2index < 10000)
+                    {
+                        listBox2.Items.Add(EniyiOzellikNo).ToString();
+                        listBox2.Items.Add(bolmesiniri).ToString();
+                        list2index++;
+                        Dugumler[GloSayac] = EniyiOzellikNo;
+                        GloSayac++;
+                        Dugumler[GloSayac] = bolmesiniri;
+                        GloSayac++;
+                    }
+                    listBox1.Items.Add("_sag" + (SagAltDizi.GetUpperBound(0) + 1) + "");
                     KullanilanOzellikler[EniyiOzellikNo] = 0;
                 }
             }
+            
 
 
             
@@ -321,31 +347,69 @@ namespace WindowsFormsApplication3
 
             deneme++;
 
-            //MessageBox.Show("" + thid + "bitti");
             return BilgiX1;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
+        //Ağaç Çizme Button
+        private void agacCiz_Click(object sender, EventArgs e)
+        {
+            int a=0;
+            int BasX = pictureBox1.Width, BasY = 20; ;
+
+            Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            Graphics g = Graphics.FromImage(bmp);
+
+            //g.DrawRectangle(new Pen(Color.Black, 3), pictureBox1.Width-40, 0, pictureBox1.Width + 40, 40);
+           // g.DrawRectangle(new Pen(Color.Black, 1), pictureBox1.Width/2,40,40,40);
+            //                                   ,  X  ,yuksek,genişlik , yuksek ,);  
+            g.DrawEllipse(new Pen(Color.Black, 1), BasX/2, BasY, 70, 40);
+            using (Font myFont = new Font("Arial", 10)) { g.DrawString("f "+Dugumler[0].ToString(), myFont, Brushes.Green, new Point(BasX/2+20, BasY+15)); }
+            using (Font myFont = new Font("Arial", 10)) { g.DrawString("__"+Dugumler[1].ToString(), myFont, Brushes.Green, new Point(BasX / 2 + 40, BasY + 15)); }
+
+
+
+            int durum = 0;
+            int tekrar = 0;
+            
+            int mevcutX=BasX /2-90;
+            int mevcutY = BasY + 80;
+            ///cizdirme işlemi 4.04.2017_03.58
+            for(int ii=2; ii<GloSayac;ii++)
+            {
+                 if(Dugumler[ii] != Dugumler[ii+2])
+                 {//sol çizgi
+                     g.DrawLine(new Pen(Color.Red, 2), BasX/2+35, BasY+40, BasX/2-60, BasY+80);
+
+                     g.DrawEllipse(new Pen(Color.Black, 1), mevcutX , mevcutY, 70, 40);
+                     using (Font myFont = new Font("Arial", 10)) { g.DrawString("f "+Dugumler[ii], myFont, Brushes.Green, new Point(mevcutX,mevcutY+15)); }
+                     using (Font myFont = new Font("Arial", 10)) { g.DrawString("__" + Dugumler[ii+1].ToString(), myFont, Brushes.Green, new Point(mevcutX+30, mevcutY+15)); }
+
+
+                 }
+
+
+            }
+
+
+
+            
+            
+            
+            
+            
+            pictureBox1.Image = bmp;
         }
 
 
 
 
-        /** private void YEDEK(string param1, int param2)
-        {
-            int ii = 0;
-
-            for (ii = 0; ii < 1000000000; ii++)
-                {
-                    if (ii % 13128777 == 0)
-                    {
-                        Invoke(new MethodInvoker(
-                        delegate { listBox1.Items.Add(param1 + "__" + param2); }
-                        ));
-                        Thread.Sleep(100);
-                    }
-
-                }
-
-
-        }*/
+     
 
 
     }
